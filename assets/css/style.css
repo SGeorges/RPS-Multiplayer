@@ -14,6 +14,14 @@ p {
     text-align: center;
 }
 
+#player-1-buttons, #player-2-buttons {
+    height: 48px;
+}
+
+#player-stats-text {
+    margin: 0 0 2px 0;
+}
+
 #message-board {
     padding: 10px 0 0 0;
 

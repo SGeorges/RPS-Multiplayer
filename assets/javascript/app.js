@@ -1,4 +1,5 @@
 // ============== Adding Base Variables ==============
+
 var status = "undefined";
 
 var player1choice = "";
@@ -11,15 +12,10 @@ var messageBoard = [];
 var messageUser = [];
 var messageText = [];
 
-var p1numGames = 0;
-var p2numGames = 0;
-
-var p1wins = 0;
-var p2wins = 0;
-
-var p1loses = 0;
-var p2loses = 0;
-
+// Array containing a players entire stats. 
+// [0] = wins [1] = loses [2] = ties
+var p1Stats = [];
+var p2Stats = [];
 
 // ============== Linking the database ==============
 
@@ -57,7 +53,7 @@ database.ref("/game").on("value", function(snapshot){
 
   if (status === "undefined") {
     if (snapshot.val().player1.set === false) {
-      status = "player1";
+      status = "Player 1";
       database.ref("/game/player1/set").set(true);
       setStatistics( snapshot );
       
@@ -66,13 +62,11 @@ database.ref("/game").on("value", function(snapshot){
         set: false,
         choice: "",
         nextChoice: false,
-        wins: 0,
-        loses: 0,
-        numGames: 0,
+        stats: [ 0, 0, 0 ],
       });
     }
     else if (snapshot.val().player2.set === false) {
-      status = "player2";
+      status = "Player 2";
       database.ref("/game/player2/set").set(true);
       setStatistics( snapshot );
 
@@ -81,19 +75,17 @@ database.ref("/game").on("value", function(snapshot){
         set: false,
         choice: "",
         nextChoice: false,
-        wins: 0,
-        loses: 0,
-        numGames: 0,
+        stats: [ 0, 0, 0],
       });
     }
     else {
       status = "Spectator";
     };
 
-    if (status === "player1") {
+    if (status === "Player 1") {
       $("#player-2-buttons").empty();
     }
-    else if (status === "player2") {
+    else if (status === "Player 2") {
       $("#player-1-buttons").empty();
     }
     else {
@@ -135,18 +127,25 @@ database.ref("/message-board").on("value", function(snapshot){
   }
 });
 
+// ============== Referencing the Stats to the database ==============
+
+database.ref("/game/player1/stats").on("value", function(snapshot){
+  p1Stats = snapshot.val();
+});
+
+database.ref("/game/player2/stats").on("value", function(snapshot){
+  p2Stats = snapshot.val();
+});
+
+
 // ============== List of Functions ==============
 
 function setStatistics( snapshot ) {
-  p1numGames = parseInt(snapshot.val().player1.numGames);
-  p2numGames = parseInt(snapshot.val().player2.numGames);
+  p1Stats = snapshot.val().player1.stats;
+  p2Stats = snapshot.val().player2.stats;
 
-  p1wins = parseInt(snapshot.val().player1.wins);
-  p2wins = parseInt(snapshot.val().player2.wins);
-
-  p1loses = parseInt(snapshot.val().player1.loses);
-  p2loses = parseInt(snapshot.val().player2.loses);
-
+  console.log( p1Stats );
+  console.log( p2Stats );
 }
 
 function player1select( value ) {
@@ -177,25 +176,38 @@ function runGame() {
       console.log("player1 wins");
       inputMessage("Server", "Player 1 Wins!");
 
+      p1Stats[0] = p1Stats[0] + 1;
+      p2Stats[1] = p2Stats[1] + 1;
+
     }
     else if ( ((player2choice === "rock") && (player1choice === "scissors")) || ((player2choice === "paper") && (player1choice === "rock")) || ((player2choice === "scissors") && (player1choice === "paper")) ) {
       console.log("player2 wins");
       inputMessage("Server", "Player 2 Wins!");
+
+      p1Stats[1] = p1Stats[1] + 1;
+      p2Stats[0] = p2Stats[0] + 1;
 
     }
     else if (player1choice === player2choice) {
       console.log("it's a tie!");
       inputMessage("Server", "Oh My! It's a Tie!");
 
+      p1Stats[2] = p1Stats[2] + 1;
+      p2Stats[2] = p2Stats[2] + 1;
+
     };
 
     printImage( player1choice, player2choice );
+    printStats();
 
     database.ref("/game/player1/nextChoice").set(false);
     database.ref("/game/player2/nextChoice").set(false);
 
     database.ref("/game/player1/choice").set("");
     database.ref("/game/player2/choice").set("");
+
+    database.ref("/game/player1/stats").set(p1Stats);
+    database.ref("/game/player2/stats").set(p2Stats);
   };
 };
 
@@ -242,19 +254,18 @@ function printImage ( choice1, choice2) {
   };
 };
 
-// function printStatistics () {
-//   $("#player-1-statistics").empty();
-//   $("#player-2-statistics").empty();
+function printStats () {
+  $("#player-1-statistics").empty();
+  $("#player-2-statistics").empty();
 
-//   $("#player-1-statistics").append("<p id= 'player-1-wins'>Player 1 Wins : " + p1wins + "</p>");
-//   $("#player-1-statistics").append("<p id= 'player-1-loses'>Player 1 Loses : " + p1loses + "</p>");
-//   $("#player-1-statistics").append("<p id= 'player-1-games'>Player 1 Games : " + p1numGames + "</p>");
+  $("#player-1-statistics").append("<p id= 'player-stats-text'>Player 1 Wins : " + p1Stats[0] + "</p>");
+  $("#player-1-statistics").append("<p id= 'player-stats-text'>Player 1 Loses : " + p1Stats[1] + "</p>");
+  $("#player-1-statistics").append("<p id= 'player-stats-text'>Player 1 Ties : " + p1Stats[2] + "</p>");
 
-//   $("#player-2-statistics").append("<p id= 'player-2-wins'>Player 2 Wins : " + p2wins + "</p>");
-//   $("#player-2-statistics").append("<p id= 'player-2-wins'>Player 2 Loses : " + p2loses + "</p>");
-//   $("#player-2-statistics").append("<p id= 'player-2-wins'>Player 2 Games : " + p2numGames + "</p>");
-
-// }
+  $("#player-2-statistics").append("<p id= 'player-stats-text'>Player 2 Wins : " + p2Stats[0] + "</p>");
+  $("#player-2-statistics").append("<p id= 'player-stats-text'>Player 2 Loses : " + p2Stats[1] + "</p>");
+  $("#player-2-statistics").append("<p id= 'player-stats-text'>Player 2 Ties : " + p2Stats[2] + "</p>");
+};
 
 function inputMessage ( user, message ) {
 
@@ -265,6 +276,8 @@ function inputMessage ( user, message ) {
   else {
     messageUser.push(status);
     messageText.push( $("#user-message").val() );
+
+    $("#user-message").val("");
   }
 
     messageBoard = [ messageUser, messageText ];
@@ -277,15 +290,28 @@ function writeMessageBoard ( messageBoard ) {
 
   if (messageBoard[0].length > 8) {
     for (var i = (messageBoard[0].length - 8); i < messageBoard[0].length; i++) {
-      $("#message-board").append("<p id= 'message-board-text' class= 'text-left'>" + messageBoard[0][i] + " : " + messageBoard[1][i] + "</p>");
+      if (messageBoard[0][i] === "Server") {
+        $("#message-board").append("<p id= 'message-board-text' class= 'text-left text-success'>" + messageBoard[0][i] + " : " + messageBoard[1][i] + "</p>");
+      }
+      else if (messageBoard[0][i] === status) {
+        $("#message-board").append("<p id= 'message-board-text' class= 'text-left text-primary'>" + messageBoard[0][i] + " : " + messageBoard[1][i] + "</p>");
+      }
+      else {
+        $("#message-board").append("<p id= 'message-board-text' class= 'text-left'>" + messageBoard[0][i] + " : " + messageBoard[1][i] + "</p>");
+      }
     };
   }
   else {
-    for (var j = (8 - messageBoard[0].length); j < 8; j++) {
-      $("#message-board").append("<p id= 'message-board-text' class= 'text-left'> </p>");
-    }
     for (var i = 0; i < messageBoard[0].length; i++) {
-      $("#message-board").append("<p id= 'message-board-text' class= 'text-left'>" + messageBoard[0][i] + " : " + messageBoard[1][i] + "</p>");
+      if (messageBoard[0][i] === "Server") {
+        $("#message-board").append("<p id= 'message-board-text' class= 'text-left text-success'>" + messageBoard[0][i] + " : " + messageBoard[1][i] + "</p>");
+      }
+      else if (messageBoard[0][i] === status) {
+        $("#message-board").append("<p id= 'message-board-text' class= 'text-left text-primary'>" + messageBoard[0][i] + " : " + messageBoard[1][i] + "</p>");
+      }
+      else {
+        $("#message-board").append("<p id= 'message-board-text' class= 'text-left'>" + messageBoard[0][i] + " : " + messageBoard[1][i] + "</p>");
+      }
     };
   };
 
