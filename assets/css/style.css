@@ -16,6 +16,8 @@ p {
 
 #message-board {
     padding: 10px 0 0 0;
+
+    height: 216px;
 }
 
 #user-message, #user-message-btn {
