@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>RPS Multiplayer</title>
+
+    <!-- Link Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Link CSS File -->
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <!-- Link Font -->
+    <link href="https://fonts.googleapis.com/css?family=Permanent+Marker" rel="stylesheet">
+    <!-- Free Icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    <!-- Firebase Reference -->
+    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+
+
+</head>
+
+
+<body>
+    <div id= "header-container" class= "card-header">
+        <p class= "h1 text-center">ROCK PAPER SCISSORS</p>
+        <p class= "h6 text-center">A GAME OF CHAMPIONS</p>
+
+    </div>
+
+    <div id = "body-container" class="container-fluid">
+        <div id= "buttons-view" class= "row"></div>
+
+        <div class= "row">
+            <div id="player-1-div" class="col-md-6">
+                <p id= "player-1-header" class= "h6 d-flex justify-content-center">Player 1</p>
+
+                <div id= "player-1-image-container" class= "d-flex justify-content-center">
+                    <img id="player-1-image" src= "assets/images/rock.png">
+                </div>
+                <div id= "player-1-buttons" class= "d-flex justify-content-center">
+                    <button id= "player-1-option" type="submit" class="btn btn-light" onclick= "player1select( 'rock' )">Rock</button>
+                    <button id= "player-1-option" type= "submit" class= "btn btn-light" onclick= "player1select( 'paper' )">Paper</button>
+                    <button id= "player-1-option" type="submit" class="btn btn-light" onclick= "player1select( 'scissors' )">Scissors</button>
+                </div>
+
+                <div id= "player-1-statistics"></div>
+            </div>
+
+            <div id="player-2-div" class="col-md-6">
+                <p id= "player-2-header" class= "h6 d-flex justify-content-center">Player 2</p>
+
+                <div id= "player-2-image-container" class= "d-flex justify-content-center">
+                    <img id= "player-2-image" src= "assets/images/paper.jpg">
+                </div>
+                <div id= "player-2-buttons" class= "d-flex justify-content-center">
+                    <button id= "player-2-option" type="submit" class="btn btn-light" onclick= "player2select( 'rock' )">Rock</button>
+                    <button id= "player-2-option" type= "submit" class= "btn btn-light" onclick= "player2select( 'paper' )">Paper</button>
+                    <button id= "player-2-option" type="submit" class="btn btn-light" onclick= "player2select( 'scissors' )">Scissors</button>
+                </div>
+
+                <div id= "player-2-statistics"></div>
+            </div>
+
+        </div>
+
+        <div id= "message-center" class = "container-fluid">
+            <p id= "message-header" class= "h6 d-flex justify-content-left border-bottom border-dark">Messages</p>
+            <div id= "message-board" class = "col-md-12"></div>
+            <div class= "input-group mb-3">
+                <input id= "user-message" type= "text" class= "form-control" placeholder= "Message">
+                <div class= "input-group-append">
+                    <button id= "user-message-btn" class= "btn btn-light" type= "button" onclick= "inputMessage()">Submit</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class= "footer">
+        <div id= "footer-container" class= "d-flex container-fluid justify-content-md-center">
+            
+        </div>
+    </footer>
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="assets/javascript/app.js"></script>
+
+</html>
