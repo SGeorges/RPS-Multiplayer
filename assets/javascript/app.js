@@ -56,7 +56,8 @@ database.ref("/game").on("value", function(snapshot){
       status = "Player 1";
       database.ref("/game/player1/set").set(true);
       setStatistics( snapshot );
-      
+      printStats();
+
       database.ref("/game/player1").onDisconnect().update({
         ID: "",
         set: false,
@@ -69,6 +70,7 @@ database.ref("/game").on("value", function(snapshot){
       status = "Player 2";
       database.ref("/game/player2/set").set(true);
       setStatistics( snapshot );
+      printStats();
 
       database.ref("/game/player2").onDisconnect().update({
         ID: "",
@@ -80,6 +82,7 @@ database.ref("/game").on("value", function(snapshot){
     }
     else {
       status = "Spectator";
+      printStats();
     };
 
     if (status === "Player 1") {
@@ -131,10 +134,12 @@ database.ref("/message-board").on("value", function(snapshot){
 
 database.ref("/game/player1/stats").on("value", function(snapshot){
   p1Stats = snapshot.val();
+  printStats();
 });
 
 database.ref("/game/player2/stats").on("value", function(snapshot){
   p2Stats = snapshot.val();
+  printStats();
 });
 
 
@@ -258,13 +263,13 @@ function printStats () {
   $("#player-1-statistics").empty();
   $("#player-2-statistics").empty();
 
-  $("#player-1-statistics").append("<p id= 'player-stats-text'>Player 1 Wins : " + p1Stats[0] + "</p>");
-  $("#player-1-statistics").append("<p id= 'player-stats-text'>Player 1 Loses : " + p1Stats[1] + "</p>");
-  $("#player-1-statistics").append("<p id= 'player-stats-text'>Player 1 Ties : " + p1Stats[2] + "</p>");
+  $("#player-1-statistics").append("<p id= 'player-stats-text' class= 'text-left'>Player 1 Wins : " + p1Stats[0] + "</p>");
+  $("#player-1-statistics").append("<p id= 'player-stats-text' class= 'text-left'>Player 1 Loses : " + p1Stats[1] + "</p>");
+  $("#player-1-statistics").append("<p id= 'player-stats-text' class= 'text-left'>Player 1 Ties : " + p1Stats[2] + "</p>");
 
-  $("#player-2-statistics").append("<p id= 'player-stats-text'>Player 2 Wins : " + p2Stats[0] + "</p>");
-  $("#player-2-statistics").append("<p id= 'player-stats-text'>Player 2 Loses : " + p2Stats[1] + "</p>");
-  $("#player-2-statistics").append("<p id= 'player-stats-text'>Player 2 Ties : " + p2Stats[2] + "</p>");
+  $("#player-2-statistics").append("<p id= 'player-stats-text' class= 'text-left'>Player 2 Wins : " + p2Stats[0] + "</p>");
+  $("#player-2-statistics").append("<p id= 'player-stats-text' class= 'text-left'>Player 2 Loses : " + p2Stats[1] + "</p>");
+  $("#player-2-statistics").append("<p id= 'player-stats-text' class= 'text-left'>Player 2 Ties : " + p2Stats[2] + "</p>");
 };
 
 function inputMessage ( user, message ) {

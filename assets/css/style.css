@@ -18,8 +18,16 @@ p {
     height: 48px;
 }
 
+#statistics-center {
+    padding: 10px 15px;
+}
+
 #player-stats-text {
     margin: 0 0 2px 0;
+}
+
+#player-1-statistics, #player-2-statistics {
+    padding: 0;
 }
 
 #message-board {

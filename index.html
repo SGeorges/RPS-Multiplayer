@@ -36,7 +36,7 @@
                 <p id= "player-1-header" class= "h6 d-flex justify-content-center">Player 1</p>
 
                 <div id= "player-1-image-container" class= "d-flex justify-content-center">
-                    <img id="player-1-image" src= "assets/images/rock.png">                   
+                    <img id="player-1-image" src= "assets/images/pending.gif">                   
                 </div>
                 <div id= "player-1-buttons" class= "d-flex justify-content-center">
                     <button id= "player-1-option" type="submit" class="btn btn-light" onclick= "player1select( 'rock' )">Rock</button>
@@ -50,7 +50,7 @@
                 <p id= "player-2-header" class= "h6 d-flex justify-content-center">Player 2</p>
 
                 <div id= "player-2-image-container" class= "d-flex justify-content-center">
-                    <img id= "player-2-image" src= "assets/images/paper.jpg">
+                    <img id= "player-2-image" src= "assets/images/pending.gif">
                 </div>
                 <div id= "player-2-buttons" class= "d-flex justify-content-center">
                     <button id= "player-2-option" type="submit" class="btn btn-light" onclick= "player2select( 'rock' )">Rock</button>
@@ -62,9 +62,13 @@
 
         </div>
         <div id= "player-statistics-container" class= "container-fluid">
-            <div class= "row">
-                <div id= "player-1-statistics" class= "col-md-6"></div>
-                <div id= "player-2-statistics" class= "col-md-6"></div>    
+            <div id = "statistics-center" class= "row">
+                <p id= "player-statistics-header" class= "h6 d-flex justify-content-center border-bottom border-dark">Player Statistics</p>
+
+                <div class= "col-md-2"></div>
+                <div id= "player-1-statistics" class= "col-md-4"></div>
+                <div class= "col-md-2"></div>
+                <div id= "player-2-statistics" class= "col-md-4"></div>    
             </div>
         </div>
 
